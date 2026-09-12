@@ -42,7 +42,14 @@ function addToHistory(email: string, code: string): void {
     otpHistory.set(email, entries);
 }
 
-// for hourly rate limit
-function getRequestTimestamps(email: string): number[]  
+// for hourly rate limit gives the "one hour ago"
+function getRequestTimestampsLastHour(email: string): number[] {
+    const cutoff = Date.now () - 60 * 60 * 1000;
+    const timestamps = requestTimestamps.get(email) ?? [];
+    const recent = timestamps.filter((ts) => ts >= cutoff);
+    requestTimestamps.set(email, recent);
+    return recent;
+} 
+
 
 function recordRequestTimestamp(email: string): void
