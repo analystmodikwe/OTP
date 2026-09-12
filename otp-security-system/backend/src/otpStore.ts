@@ -17,7 +17,10 @@ function getActiveOtp(email: string): OtpRecord | undefined {
     return activeOtps.get(email)
 }
 
-function setActiveOtp(email: string, record: OtpRecord): void
+
+function setActiveOtp(email: string, record: OtpRecord): void {
+    activeOtps.set(email, record);
+}
 
 function getRecentHistory(email: string): { code: string; createdAt: number }[]
 
