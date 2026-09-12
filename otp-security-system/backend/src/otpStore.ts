@@ -12,8 +12,10 @@ const activeOtps = new Map<string, OtpRecord>();
 const otpHistory = new Map<string, HistoryEntry[]>();
 const requestTimestamps = new Map<string, number[]>()
 
-
-function getActiveOtp(email: string): OtpRecord | undefined
+// returning the email with rules from otpRecords
+function getActiveOtp(email: string): OtpRecord | undefined {
+    return activeOtps.get(email)
+}
 
 function setActiveOtp(email: string, record: OtpRecord): void
 
