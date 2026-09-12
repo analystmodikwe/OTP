@@ -1,4 +1,17 @@
-// shapes for the functions to make it easier to do bodies
+// This is where the the actual data will live instead of a real data base 
+
+// Each email maps to:
+//  one active OTP record
+//  a history of past codes (for 24h duplicate avoidance)
+//  a log of request timestamps (for the hourly rate limit)
+
+import { OtpRecord, HistoryEntry } from "./types";
+import { OTP_CONFIG } from "./config";
+
+const activeOtps = new Map<string, OtpRecord>();
+const otpHistory = new Map<string, HistoryEntry[]>();
+const requestTimestamps = new Map<string, number[]>()
+
 
 function getActiveOtp(email: string): OtpRecord | undefined
 
