@@ -36,7 +36,11 @@ function getRecentHistory(email: string): HistoryEntry[] {
     return fresh
 }
 
-function addToHistory(email: string, code: string): void
+function addToHistory(email: string, code: string): void {
+    const entries = otpHistory.get(email) ?? [];
+    entries.push({ code, createdAt: Date.now() });
+    otpHistory.set(email, entries);
+}
 
 // for hourly rate limit
 function getRequestTimestamps(email: string): number[]  
