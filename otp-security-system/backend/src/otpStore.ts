@@ -52,4 +52,8 @@ function getRequestTimestampsLastHour(email: string): number[] {
 } 
 
 
-function recordRequestTimestamp(email: string): void
+function recordRequestTimestamp(email: string): void {
+    const timestamps = requestTimestamps.get(email) ?? [];
+    timestamps.push(Date.now());
+    requestTimestamps.set(email, timestamps);
+}
