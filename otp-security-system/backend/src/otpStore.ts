@@ -22,7 +22,19 @@ function setActiveOtp(email: string, record: OtpRecord): void {
     activeOtps.set(email, record);
 }
 
-function getRecentHistory(email: string): { code: string; createdAt: number }[]
+// convets 24 hours to milliseconds 
+// give current time in milliseconds anything created befor the cutoff is old to count
+// check if email exist or not if not ?? falls back to an empty array
+// prune while reading, so that old entries dont accumulate foreverr
+// writing the trimmed-down array back into the Map, replacing the old one. So every time i read history, i also quietly cleaning it up
+function getRecentHistory(email: string): HistoryEntry[] {
+    const windowMs = OTP_CONFIG.HISTORY_WINDOW_HOURS * 60 * 60 * 1000;
+    const cutoff = Date.now() - windowMs;
+    const entries = otpHistory.get(email) ?? [];
+    const fresh = entries.filter((entry) => entry.createdAt >= cutoff);
+    otpHistory.set(email, fresh);
+    return fresh
+}
 
 function addToHistory(email: string, code: string): void
 
