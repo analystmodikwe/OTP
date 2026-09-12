@@ -1,0 +1,6 @@
+export const OTP_CONFIG = {
+    MAX_OTP_PER_HOUR: 3,
+    OTP_EXPIRY_TIME : 30,
+    RESEND_WINDOW_MIN: 5,
+    MAX_RESEND_PER_OTP: 3
+}
