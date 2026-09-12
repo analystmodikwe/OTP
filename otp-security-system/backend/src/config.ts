@@ -1,4 +1,4 @@
-//  all OTP RULES
+//  all OTP RULES that holds rate limit, expiry time, resend window, max resends
 export const OTP_CONFIG = {
     MAX_OTP_PER_HOUR: Number(Process.env.OTP_MAX_REQUESTS_PER_HOUR ?? 3),
 
