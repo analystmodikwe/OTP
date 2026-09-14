@@ -13,12 +13,11 @@ const otpHistory = new Map<string, HistoryEntry[]>();
 const requestTimestamps = new Map<string, number[]>()
 
 // returning the email with rules from otpRecords
-function getActiveOtp(email: string): OtpRecord | undefined {
+export function getActiveOtp(email: string): OtpRecord | undefined {
     return activeOtps.get(email)
 }
 
-
-function setActiveOtp(email: string, record: OtpRecord): void {
+export function setActiveOtp(email: string, record: OtpRecord): void {
     activeOtps.set(email, record);
 }
 
@@ -27,7 +26,7 @@ function setActiveOtp(email: string, record: OtpRecord): void {
 // check if email exist or not if not ?? falls back to an empty array
 // prune while reading, so that old entries dont accumulate foreverr
 // writing the trimmed-down array back into the Map, replacing the old one. So every time i read history, i also quietly cleaning it up
-function getRecentHistory(email: string): HistoryEntry[] {
+export function getRecentHistory(email: string): HistoryEntry[] {
     const windowMs = OTP_CONFIG.HISTORY_WINDOW_HOURS * 60 * 60 * 1000;
     const cutoff = Date.now() - windowMs;
     const entries = otpHistory.get(email) ?? [];
@@ -36,14 +35,14 @@ function getRecentHistory(email: string): HistoryEntry[] {
     return fresh
 }
 
-function addToHistory(email: string, code: string): void {
+export function addToHistory(email: string, code: string): void {
     const entries = otpHistory.get(email) ?? [];
     entries.push({ code, createdAt: Date.now() });
     otpHistory.set(email, entries);
 }
 
 // for hourly rate limit gives the "one hour ago"
-function getRequestTimestampsLastHour(email: string): number[] {
+export function getRequestTimestampsLastHour(email: string): number[] {
     const cutoff = Date.now () - 60 * 60 * 1000;
     const timestamps = requestTimestamps.get(email) ?? [];
     const recent = timestamps.filter((ts) => ts >= cutoff);
@@ -52,7 +51,7 @@ function getRequestTimestampsLastHour(email: string): number[] {
 } 
 
 
-function recordRequestTimestamp(email: string): void {
+export function recordRequestTimestamp(email: string): void {
     const timestamps = requestTimestamps.get(email) ?? [];
     timestamps.push(Date.now());
     requestTimestamps.set(email, timestamps);
