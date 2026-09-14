@@ -103,6 +103,25 @@ export function requestOtp(email: string): RequestOtpResult | { rejected: true; 
 }
 
 
+// verifyng the OTP
+export function verifyOtp(email: string, submittedCode: string): VerifyOtpResult {
+  const record = getActiveOtp(email);
 
+  if (!record) {
+    return { valid: false, reason: "No OTP found for this email." };
+  }
+  if (record.used) {
+    return { valid: false, reason: "This OTP has already been used." };
+  }
+  if (Date.now() > record.expiresAt) {
+    return { valid: false, reason: "This OTP has expired." };
+  }
+  if (record.code !== submittedCode) {
+    return { valid: false, reason: "Incorrect OTP." };
+  }
 
-function verifyOtp(email: string, submittedCode: string): { valid: boolean; reason?: string }
+  // Mark used — "only latest OTP valid" + "cannot be used more than once"
+  // are both satisfied since this record IS the latest active one.
+  setActiveOtp(email, { ...record, used: true });
+  return { valid: true };
+}
