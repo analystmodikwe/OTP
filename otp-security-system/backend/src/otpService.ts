@@ -39,9 +39,14 @@ function generateUniqueCode(email: string): string {
     return code;
 }
 
-
-
-function canRequestOtp(email: string): { allowed: boolean; reason?: string }
+// a function to be able to request another OTP
+export function canRequestOtp(email: string): CanRequestResult { 
+    const recentRequests = getRequestTimestampsLastHour(email);
+    if (recentRequests.length >= OTP_CONFIG.MAX_OTP_PER_HOUR) {
+        return { allowed: false, reason: "TOO MANY OTP REQUESTS. TRY AGAIN LATER"}
+    }
+    return { allowed: true };
+ }
 
 
 
