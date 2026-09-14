@@ -48,6 +48,19 @@ export function canRequestOtp(email: string): CanRequestResult {
     return { allowed: true };
  }
 
+// function to check if its eligible to resend
+ function isEligibleForResend(record: OtpRecord | undefined): record is OtpRecord {
+    if (!record) return false;
+    if (record.used) return false;
+    if (record.resendCount >= OTP_CONFIG.MAX_RESENDS) return false;
+
+    const winndowMs = OTP_CONFIG.RESEND_WINDOW_MINUTES * 60 * 1000;
+    const withWindow = Date.now() - record.firstSentAt < winndowMs;
+    return withinWindow;
+
+ }
+
+
 
 
 // this will ensure whether this is a fresh otp or a resend
