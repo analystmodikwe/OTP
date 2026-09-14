@@ -4,7 +4,7 @@
 
 export interface OtpRecord {
     code:string;
-    createdAT: number;
+    createdAt: number;
     firstSentAt: number;
     expiresAt: number;
     used: boolean;
