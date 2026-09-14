@@ -8,7 +8,8 @@ export const OTP_CONFIG = {
   RESEND_WINDOW_MINUTES: Number(process.env.OTP_RESEND_WINDOW_MINUTES ?? 5),
 
   MAX_RESENDS: Number(process.env.OTP_MAX_RESENDS ?? 3),
-  CODE_LENGTH: 6,
   
+  CODE_LENGTH: 6,
+
   HISTORY_WINDOW_HOURS: 24,
 };
