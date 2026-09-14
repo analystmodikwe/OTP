@@ -57,13 +57,52 @@ export function canRequestOtp(email: string): CanRequestResult {
     const winndowMs = OTP_CONFIG.RESEND_WINDOW_MINUTES * 60 * 1000;
     const withWindow = Date.now() - record.firstSentAt < winndowMs;
     return withinWindow;
-
  }
 
 
 
-
 // this will ensure whether this is a fresh otp or a resend
-function requestOtp(email: string): { code: string; isResend: boolean }
+export function requestOtp(email: string): RequestOtpResult | { rejected: true; reason: string } {
+  const check = canRequestOtp(email);
+  if (!check.allowed) {
+    return { rejected: true, reason: check.reason! };
+  }
+
+   // Every attempt counts toward the hourly limit, resend or not.
+  recordRequestTimestamp(email);
+
+  const existing = getActiveOtp(email);
+
+  if (isEligibleForResend(existing)) {
+    const updated: OtpRecord = {
+      ...existing,
+      resendCount: existing.resendCount + 1,
+      expiresAt: Date.now() + OTP_CONFIG.EXPIRY_SECONDS * 1000,
+      // firstSentAt is intentionally left unchanged
+    };
+    setActiveOtp(email, updated);
+    return { code: updated.code, isResend: true };
+  }
+
+  // No eligible existing OTP — generate a fresh one.
+  const code = generateUniqueCode(email);
+  const now = Date.now();
+  const record: OtpRecord = {
+    code,
+    createdAt: now,
+    firstSentAt: now,
+    expiresAt: now + OTP_CONFIG.EXPIRY_SECONDS * 1000,
+    used: false,
+    resendCount: 0,
+  };
+
+  setActiveOtp(email, record);
+  addToHistory(email, code);
+
+  return { code, isResend: false };
+}
+
+
+
 
 function verifyOtp(email: string, submittedCode: string): { valid: boolean; reason?: string }
