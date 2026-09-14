@@ -28,7 +28,7 @@ function generateCandidateCode(): string {
 // this will loop against history internally
 function generateUniqueCode(email: string): string {
     const recentCodes = new Set(
-        getRecentHistory(email).map((entry)) => entry.code
+        getRecentHistory(email).map((entry) => entry.code
     );
 
     // loop to regenerating the OTP silently
@@ -55,7 +55,7 @@ export function canRequestOtp(email: string): CanRequestResult {
     if (record.resendCount >= OTP_CONFIG.MAX_RESENDS) return false;
 
     const winndowMs = OTP_CONFIG.RESEND_WINDOW_MINUTES * 60 * 1000;
-    const withWindow = Date.now() - record.firstSentAt < winndowMs;
+    const withinWindow = Date.now() - record.firstSentAt < winndowMs;
     return withinWindow;
  }
 
