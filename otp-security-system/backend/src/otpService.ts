@@ -18,6 +18,15 @@ import {
   VerifyOtpResult,
 } from "./types";
 
+// this is where my 6digit string willbe and the otp will be able to start with zero
+function generateCandidateCode(): string {
+    const n = Math.floor(Math.random() * 1_000_000);
+    return n.toString().padStart(OTP_CONFIG.CODE_LENGTH, "0");
+}
+
+
+
+
 function canRequestOtp(email: string): { allowed: boolean; reason?: string }
 
 // this will loop against history internally
