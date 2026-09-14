@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import otpRoutes from "./routes/otpRoutes";
+import otpRoutes from "./routes/otpRoutes.js";
 
 const app = express();
 
