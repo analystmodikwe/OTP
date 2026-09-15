@@ -4,7 +4,8 @@ import otpRoutes from "./routes/otpRoutes";
 
 const app = express();
 
-app.use(cors({ origin: "https://otp-chi-nine.vercel.app/" }));
+app.use(cors({ origin: "https://otp-chi-nine.vercel.app" }));
+
 app.use(express.json());
 app.use("/api/otp", otpRoutes);
 
