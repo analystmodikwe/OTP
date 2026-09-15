@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Local backend — i am going to swap this out for an env var before deploying anywhere real
-const API_BASE = "http://localhost:4000/api/otp";
+const API_BASE  = import.meta.env.VITE_API_BASE;
 
 export default function SendOtp() {
   const [email, setEmail] = useState("");
